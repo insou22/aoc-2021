@@ -5,37 +5,34 @@ fn main() {
 
     match arg.as_deref() {
         Some(part @ ("1" | "2")) => {
-            let lines = std::io::stdin()
+            let input = std::io::stdin()
                 .lock()
                 .lines()
                 .map(Result::unwrap)
                 .map(|line| line.parse::<u32>().unwrap())
                 .collect::<Vec<_>>();
 
-            match part {
+            let count = match part {
                 "1" => {
-                    let count = lines.windows(2)
+                    input.windows(2)
                         .filter(|window| match window {
                             &[a, b] => a < b,
                             _       => unreachable!(),
                         })
-                        .count();
-
-                    println!("{}", count);
+                        .count()
                 }
                 "2" => {
-                    let count = lines.windows(4)
+                    input.windows(4)
                         .filter(|window| match window {
                             &[a, b, c, d] => (a + b + c) < (b + c + d),
                             _       => unreachable!(),
                         })
-                        .count();
-
-                    println!("{}", count); 
+                        .count()
                 }
                 _ => unreachable!(),
-            }
-                
+            };
+
+            println!("{}", count);
         }
         _ => {
             let program = std::env::args()
